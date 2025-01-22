@@ -1,6 +1,17 @@
 <?php
+
+session_start();
+
+
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not authenticated
+    header('Location: login.html');
+    exit();
+}
+
+
 require_once 'functions.php';
-$items = getAllItems($conn);
+$items = getAllItems($pdo);
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +51,8 @@ $items = getAllItems($conn);
                 <?php endif; ?>
             </tbody>
         </table>
+        <a href="logout.php" class="btn btn-danger">Logout</a>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
