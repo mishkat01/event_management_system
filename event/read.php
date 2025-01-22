@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-require_once 'functions.php';
+require_once '../functions.php';
 $items = getAllItems($pdo);
 ?>
 
@@ -51,7 +51,7 @@ $items = getAllItems($pdo);
                 <?php endif; ?>
             </tbody>
         </table>
-        <a href="logout.php" class="btn btn-danger">Logout</a>
+        <a href="../index.html" class="btn btn-danger">Logout</a>
 
     </div>
 
