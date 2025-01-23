@@ -1,17 +1,10 @@
 <?php
-
-session_start();
-
-
-if (!isset($_SESSION['user_id'])) {
-    // Redirect to login page if not authenticated
-    header('Location: login.html');
-    exit();
+if (is_readable('../../controllers/event/read.php')) {
+    echo "File is readable.";
+} else {
+    echo "File is not accessible.";
 }
 
-
-require_once '../functions.php';
-$items = getAllItems($pdo);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +19,7 @@ $items = getAllItems($pdo);
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Items List</h1>
+        <h1 class="mb-4">Items </h1>
         <table class="table table-bordered">
             <thead class="thead-light">
                 <tr>

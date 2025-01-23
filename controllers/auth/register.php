@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require '../../config/config.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $username;
 
         // Redirect to the protected page (index.php)
-        header('Location: index.php');
+        header('Location: ../../index.php');
         exit();
     } else {
         echo "An error occurred!";
