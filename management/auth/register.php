@@ -1,0 +1,51 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    $conn = new mysqli('localhost', 'root', '', 'event_management_system');
+    $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+    $stmt->bind_param('ss', $username, $password);
+
+    if ($stmt->execute()) {
+        echo "Registration successful!";
+        header("Location: login.php");
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2 class="text-center mb-4">Event Management System</h2>
+    <form method="POST" class="w-50 mx-auto mt-5 p-4 border rounded shadow-sm">
+        <h2 class="text-center mb-4">Register</h2>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">Register</button>
+        <a href="login.php" class="btn btn-secondary btn-block mt-2">Login</a>
+    </form>
+
+</body>
+
+</html>

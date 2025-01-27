@@ -13,7 +13,7 @@ function getAllItems($conn) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-$items = getAllItems($pdo);
+$items = 'mishu';
 ?>
 
 
