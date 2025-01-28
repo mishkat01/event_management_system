@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'config/config.php';
+require '../config/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $event_id = $_POST['event_id'];
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$event) {
         $_SESSION['error'] = "Event not found.";
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit;
     }
 
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($current_registrations >= $event['max_capacity']) {
         $_SESSION['error'] = "Event is fully booked.";
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit;
     }
 
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($existing_registration) {
         $_SESSION['error'] = "You have already registered for this event.";
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit;
     }
 
@@ -45,6 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$event_id, $name, $email]);
 
     $_SESSION['success'] = "You have successfully registered for the event.";
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }

@@ -6,22 +6,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     $conn = new mysqli('localhost', 'root', '', 'event_management_system');
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, password,role FROM users WHERE username = ?");
     $stmt->bind_param('s', $username);
     $stmt->execute();
     $result = $stmt->get_result();
-
     if ($row = $result->fetch_assoc()) {
         if (password_verify($password, $row['password'])) {
             $_SESSION['user_id'] = $row['id'];
-            echo "Login successful!";
-            header("Location: ../event/dashboard.php");
+            $_SESSION['role'] = $row['role'];
+
+            if ($row['role'] === 'admin') {
+                echo "Login successful!";
+                header("Location: ../admin/manage-events.php");
+            } elseif ($row['role'] === 'user') {
+                echo "Login successful!";
+                header("Location: ../management/event/dashboard.php");
+            } else {
+                echo "Invalid User. Access denied.";
+            }
         } else {
             echo "Invalid password.";
         }
     } else {
         echo "User not found.";
     }
+
 
     $stmt->close();
     $conn->close();
@@ -51,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit" class="btn btn-primary btn-block">Login</button>
         <a href="register.php" class="btn btn-secondary btn-block mt-2">Register</a>
     </form>
+
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
