@@ -4,6 +4,12 @@ if (!isset($_SESSION['user_id'])) {
     die("Access denied! Please login.");
 }
 
+// Check if the user is an admin
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'manager') {
+    header('Location: ../auth/login.php');
+    exit;
+}
+
 // Database connection
 $conn = new mysqli('localhost', 'root', '', 'event_management_system');
 if ($conn->connect_error) {

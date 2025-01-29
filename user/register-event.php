@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($current_registrations >= $event['max_capacity']) {
         $_SESSION['error'] = "Event is fully booked.";
-        header('Location: ../index.php');
+        header('Location: dashboard.php');
         exit;
     }
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($existing_registration) {
         $_SESSION['error'] = "You have already registered for this event.";
-        header('Location: ../index.php');
+        header('Location: dashboard.php');
         exit;
     }
 
@@ -50,6 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$event_id, $user_id]);
 
     $_SESSION['success'] = "You have successfully registered for the event.";
-    header('Location: ../index.php');
+    header('Location: dashboard.php');
     exit;
 }

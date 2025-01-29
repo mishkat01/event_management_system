@@ -21,6 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } elseif ($row['role'] === 'user') {
                 echo "Login successful!";
                 header("Location: ../user/dashboard.php");
+            } elseif ($row['role'] === 'manager') {
+                echo "Login successful!";
+                header("Location: ../manager/event/dashboard.php");
             } else {
                 echo "Invalid User. Access denied.";
             }
