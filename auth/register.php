@@ -1,11 +1,12 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     $conn = new mysqli('localhost', 'root', '', 'event_management_system');
-    $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-    $stmt->bind_param('ss', $username, $password);
+    $stmt = $conn->prepare("INSERT INTO users (username,email, password) VALUES (?, ?,?)");
+    $stmt->bind_param('sss', $username, $email, $password);
 
     if ($stmt->execute()) {
         echo "Registration successful!";
@@ -36,6 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" name="email" class="form-control" placeholder="Enter your email" required>
         </div>
         <div class="form-group">
             <label for="password">Password</label>

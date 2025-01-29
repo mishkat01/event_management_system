@@ -25,9 +25,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<form method="POST">
-    Event Name: <input type="text" name="name" required><br>
-    Description: <textarea name="description"></textarea><br>
-    Max Capacity: <input type="number" name="max_capacity" required><br>
-    <button type="submit">Create Event</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form method="POST" class="p-4 border rounded bg-white shadow-sm">
+                    <h3 class="text-primary mb-3 text-center">Create New Event</h3>
+
+                    <div class="form-group mb-3">
+                        <label for="name" class="form-label">Event Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter event name" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter event description"></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="max_capacity" class="form-label">Max Capacity</label>
+                        <input type="number" id="max_capacity" name="max_capacity" class="form-control" placeholder="Enter maximum capacity" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Create Event</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

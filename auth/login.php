@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: ../admin/manage-events.php");
             } elseif ($row['role'] === 'user') {
                 echo "Login successful!";
-                header("Location: ../management/event/dashboard.php");
+                header("Location: ../user/dashboard.php");
             } else {
                 echo "Invalid User. Access denied.";
             }

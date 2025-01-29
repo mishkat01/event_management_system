@@ -24,18 +24,18 @@ if (!$event) {
     die('Event not found.');
 }
 
-// Generate CSV for attendees
+// Generate CSV for registrations
 header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename="attendees_list_event_' . $event_id . '.csv"');
+header('Content-Disposition: attachment; filename="registrations_list_event_' . $event_id . '.csv"');
 
 $output = fopen('php://output', 'w');
 fputcsv($output, ['ID', 'Name', 'Email', 'Registered At']);
 
-// Fetch attendees for the specific event
+// Fetch registrations for the specific event
 $stmt = $pdo->prepare("
-    SELECT attendees.id, attendees.name, attendees.email, attendees.created_at 
-    FROM attendees 
-    WHERE attendees.event_id = :event_id
+    SELECT registrations.id, registrations.name, registrations.email, registrations.created_at 
+    FROM registrations 
+    WHERE registrations.event_id = :event_id
 ");
 $stmt->execute(['event_id' => $event_id]);
 
