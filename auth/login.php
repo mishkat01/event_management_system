@@ -6,39 +6,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     $conn = new mysqli('localhost', 'root', '', 'event_management_system');
-    $stmt = $conn->prepare("SELECT id, password,role FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, password, role, status FROM users WHERE username = ?");
     $stmt->bind_param('s', $username);
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($row = $result->fetch_assoc()) {
+        if ($row['status'] == 0) {
+            echo "<script>alert('You are banned. Access denied.'); window.location.href='login.php';</script>";
+            exit;
+        }
+
         if (password_verify($password, $row['password'])) {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['role'] = $row['role'];
 
             if ($row['role'] === 'admin') {
-                echo "Login successful!";
                 header("Location: ../admin/manage-events.php");
+                exit;
             } elseif ($row['role'] === 'user') {
-                echo "Login successful!";
                 header("Location: ../user/dashboard.php");
+                exit;
             } elseif ($row['role'] === 'manager') {
-                echo "Login successful!";
                 header("Location: ../manager/event/dashboard.php");
+                exit;
             } else {
-                echo "Invalid User. Access denied.";
+                echo "<script>alert('Invalid User. Access denied.');</script>";
             }
         } else {
-            echo "Invalid password.";
+            echo "<script>alert('Invalid password.');</script>";
         }
     } else {
-        echo "User not found.";
+        echo "<script>alert('User not found.');</script>";
     }
-
 
     $stmt->close();
     $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Login</button>
-        <a href="register.php" class="btn btn-secondary btn-block mt-2">Register</a>
+        <a href="../index.php" class="btn btn-secondary btn-block mt-2">Register</a>
     </form>
 
 

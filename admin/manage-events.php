@@ -66,12 +66,14 @@ if (isset($_GET['delete_event_id'])) {
     <div class="container py-5">
         <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <h1 class="text-center text-primary mb-4">Admin - Manage Events</h1>
+                <h1 class="text-center text-primary mb-4">Admin</h1>
                 <div class="d-flex justify-content-end">
-                    <a href="../auth/logout.php" class="btn btn-danger">Logout</a>
+                    <a href="../auth/logout.php" class="btn btn-danger me-2">Logout</a>
+                    <a href="management.php" class="btn btn-primary">Managements</a>
                 </div>
             </div>
         </div>
+
 
         <!-- Add Event Form -->
         <div class="card shadow-sm mb-4">

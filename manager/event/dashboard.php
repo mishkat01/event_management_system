@@ -30,20 +30,27 @@ if (isset($_GET['delete_id'])) {
     exit;
 }
 
-// Pagination logic
+// Pagination and filtering logic
 $limit = 5;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-// Fetch only events created by the logged-in user
-$stmt = $conn->prepare("SELECT * FROM events WHERE user_id = ? LIMIT ? OFFSET ?");
-$stmt->bind_param("iii", $user_id, $limit, $offset);
+// Fetch filter and sort parameters
+$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'created_at';
+$order = isset($_GET['order']) && $_GET['order'] == 'desc' ? 'DESC' : 'ASC';
+
+// SQL query for fetching events based on filters and sorting
+$sql = "SELECT * FROM events WHERE user_id = ? AND name LIKE ? ORDER BY $sort $order LIMIT ? OFFSET ?";
+$stmt = $conn->prepare($sql);
+$filter_like = "%" . $filter . "%";
+$stmt->bind_param("ssii", $user_id, $filter_like, $limit, $offset);
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Fetch total event count for pagination
-$stmt_total = $conn->prepare("SELECT COUNT(*) AS total FROM events WHERE user_id = ?");
-$stmt_total->bind_param("i", $user_id);
+$stmt_total = $conn->prepare("SELECT COUNT(*) AS total FROM events WHERE user_id = ? AND name LIKE ?");
+$stmt_total->bind_param("ss", $user_id, $filter_like);
 $stmt_total->execute();
 $total_events = $stmt_total->get_result()->fetch_assoc()['total'];
 $total_pages = ceil($total_events / $limit);
@@ -69,6 +76,30 @@ $stmt_total->close();
             <a href="../../auth/logout.php" class="btn btn-danger">Logout</a>
         </div>
         <a href="create_event.php" class="btn btn-info">Create Event</a><br><br>
+
+        <!-- Filter and Sort options -->
+        <form method="get" action="dashboard.php" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="filter" class="form-control" placeholder="Search by name" value="<?= htmlspecialchars($filter) ?>">
+                </div>
+                <div class="col-md-3">
+                    <select name="sort" class="form-control">
+                        <option value="created_at" <?= $sort == 'created_at' ? 'selected' : '' ?>>Sort by Date</option>
+                        <option value="name" <?= $sort == 'name' ? 'selected' : '' ?>>Sort by Name</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="order" class="form-control">
+                        <option value="asc" <?= $order == 'asc' ? 'selected' : '' ?>>Ascending</option>
+                        <option value="desc" <?= $order == 'desc' ? 'selected' : '' ?>>Descending</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary btn-block">Apply</button>
+                </div>
+            </div>
+        </form>
 
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-primary text-white">
@@ -97,7 +128,7 @@ $stmt_total->close();
             <ul class="pagination justify-content-center">
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                        <a class="page-link" href="dashboard.php?page=<?= $i ?>"><?= $i ?></a>
+                        <a class="page-link" href="dashboard.php?page=<?= $i ?>&filter=<?= urlencode($filter) ?>&sort=<?= $sort ?>&order=<?= $order ?>"><?= $i ?></a>
                     </li>
                 <?php endfor; ?>
             </ul>
