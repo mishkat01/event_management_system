@@ -12,7 +12,8 @@ $conn = new mysqli('localhost', 'root', '', 'event_management_system');
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    $_SESSION['message'] = $conn->error;
+    echo "<script>alert('" . addslashes($conn->connect_error) . "');</script>";
 }
 
 // Handle block/unblock request

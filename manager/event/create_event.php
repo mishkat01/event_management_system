@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Event created successfully!";
         header("Location: ../event/dashboard.php");
     } else {
-        echo "Error: " . $conn->error;
+        $_SESSION['message'] = $conn->error;
+        echo "<script>alert('" . addslashes($conn->error) . "');</script>";
     }
 
     $stmt->close();

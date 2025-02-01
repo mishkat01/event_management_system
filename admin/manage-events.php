@@ -33,7 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_event'])) {
         header('Location: manage-events.php');
         exit;
     } else {
-        echo "Error: " . $stmt->error;
+        $_SESSION['message'] = $conn->error;
+        echo "<script>alert('" . addslashes($conn->error) . "');</script>";
     }
 
     $stmt->close();
