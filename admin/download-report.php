@@ -29,12 +29,17 @@ header('Content-Type: text/csv');
 header('Content-Disposition: attachment; filename="registrations_list_event_' . $event_id . '.csv"');
 
 $output = fopen('php://output', 'w');
-fputcsv($output, ['ID', 'Name', 'Email', 'Registered At']);
+fputcsv($output, ['Registration ID', 'User ID', 'User Name', 'Email', 'Phone', 'Registered At']);
 
-// Fetch registrations for the specific event
+// Fetch registrations with user details using the foreign key
 $stmt = $pdo->prepare("
-    SELECT registrations.id, registrations.name, registrations.email, registrations.created_at 
-    FROM registrations 
+    SELECT registrations.id AS registration_id, 
+           users.id AS user_id, 
+           users.username AS user_name, 
+           users.email, 
+           registrations.created_at
+    FROM registrations
+    INNER JOIN users ON registrations.user_id = users.id
     WHERE registrations.event_id = :event_id
 ");
 $stmt->execute(['event_id' => $event_id]);

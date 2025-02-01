@@ -16,15 +16,31 @@ $events = $stmt->fetchAll();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_event'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
-    $max_capacity = $_POST['max_capacity'];
-    $created_by = $_SESSION['user_id'];
+    $max_capacity = (int)$_POST['max_capacity'];
 
-    $stmt = $pdo->prepare("INSERT INTO events (name, description, max_capacity, created_by) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$name, $description, $max_capacity, $created_by]);
+    // Connect to database
+    $conn = new mysqli('localhost', 'root', '', 'event_management_system');
 
-    header('Location: manage-events.php');
-    exit;
+
+    // Prepare the SQL statement
+    $stmt = $conn->prepare("INSERT INTO events (name, description, max_capacity) VALUES (?, ?, ?)");
+
+    // Bind parameters (s = string, i = integer)
+    $stmt->bind_param("ssi", $name, $description, $max_capacity);
+
+    // Execute statement
+    if ($stmt->execute()) {
+        header('Location: manage-events.php');
+        exit;
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    // Close statement and connection
+    $stmt->close();
+    $conn->close();
 }
+
 
 // Delete an event
 if (isset($_GET['delete_event_id'])) {
