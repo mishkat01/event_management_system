@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Check if the user is an manager
+// Check if the user is a manager
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'manager') {
     header('Location: ../../auth/login.php');
     exit;
@@ -28,7 +28,7 @@ if (isset($_GET['delete_id'])) {
 }
 
 // Pagination and filtering logic
-$limit = 5;
+$limit = 2; // Display 2 events per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
@@ -122,13 +122,26 @@ $stmt_total->close();
             </div>
         </div>
 
-        <nav aria-label="Page navigation">
+        <!-- Pagination Links -->
+        <nav>
             <ul class="pagination justify-content-center">
+                <?php if ($page > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $page - 1 ?>&filter=<?= urlencode($filter) ?>&sort=<?= $sort ?>&order=<?= $order ?>">Previous</a>
+                    </li>
+                <?php endif; ?>
+
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                        <a class="page-link" href="dashboard.php?page=<?= $i ?>&filter=<?= urlencode($filter) ?>&sort=<?= $sort ?>&order=<?= $order ?>"><?= $i ?></a>
+                    <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                        <a class="page-link" href="?page=<?= $i ?>&filter=<?= urlencode($filter) ?>&sort=<?= $sort ?>&order=<?= $order ?>"><?= $i ?></a>
                     </li>
                 <?php endfor; ?>
+
+                <?php if ($page < $total_pages): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $page + 1 ?>&filter=<?= urlencode($filter) ?>&sort=<?= $sort ?>&order=<?= $order ?>">Next</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </nav>
     </div>

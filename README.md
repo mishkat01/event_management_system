@@ -38,4 +38,19 @@ C.Place project files in htdocs or appropriate folder.
 Access via http://localhost/event_management_system.
 
 
+Credentials
+
+Users
+username: user
+password: 1
+
+management
+username:manager
+password:123
+
+admin
+username:admin
+password:12345
+
+
 
