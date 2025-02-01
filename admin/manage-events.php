@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_event'])) {
     // Bind parameters (s = string, i = integer)
     $stmt->bind_param("sisi", $name, $user_id, $description, $max_capacity);
 
-    // Execute statement
+
     if ($stmt->execute()) {
         header('Location: manage-events.php');
         exit;
@@ -36,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_event'])) {
         echo "Error: " . $stmt->error;
     }
 
-    // Close statement and connection
     $stmt->close();
     $conn->close();
 }

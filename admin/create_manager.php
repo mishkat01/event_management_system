@@ -1,21 +1,27 @@
 <?php
+session_start();
+// Check if the user is an admin
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../auth/login.php');
+    exit;
+}
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $role = 2; // Manager role ID
 
     $conn = new mysqli('localhost', 'root', '', 'event_management_system');
-    $stmt = $conn->prepare("INSERT INTO users (username,email, password) VALUES (?, ?,?)");
-    $stmt->bind_param('sss', $username, $email, $password);
+    $stmt = $conn->prepare("INSERT INTO users (username,email, password,role) VALUES (?, ?,?,?)");
+    $stmt->bind_param('sssi', $username, $email, $password, $role);
 
     if ($stmt->execute()) {
-        header("Location: user/dashboard.php");
-        exit;
+        echo "Manager Create successful!";
+        header("Location: management.php");
     } else {
         $_SESSION['message'] = $conn->error;
         echo "<script>alert('" . addslashes($conn->error) . "');</script>";
     }
-
 
     $stmt->close();
     $conn->close();
@@ -28,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register </title>
+    <title>Register - Bootstrap Form</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 
 <body class="bg-primary bg-gradient d-flex align-items-center justify-content-center vh-100">
@@ -41,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="col-md-5">
                 <div class="card shadow rounded">
                     <div class="card-body p-4">
-                        <h2 class="text-center text-primary mb-4">Register</h2>
+                        <h2 class="text-center text-primary mb-4">Create Manager</h2>
 
                         <form method="POST">
                             <div class="mb-3">
@@ -60,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Register</button>
-                            <a href="auth/login.php" class="btn btn-outline-secondary w-100 mt-2">Login</a>
                         </form>
                     </div>
                 </div>
@@ -69,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 
 </body>
 

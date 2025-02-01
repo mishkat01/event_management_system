@@ -25,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
         header("Location: management.php");
         exit();
     } else {
-        die("Error updating status: " . $conn->error);
+        $_SESSION['message'] = $conn->error;
+        echo "<script>alert('" . addslashes($conn->error) . "');</script>";
     }
 }
 
@@ -51,7 +52,14 @@ if (!$result) {
 
 <body>
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Manager Management</h2>
+        <h2 class="text-center mb-4">Management</h2>
+        <a href="manage-events.php" class="btn btn-secondary mb-3">
+            ← Back
+        </a>
+        <a href="create_manager.php" class="btn btn-primary mb-3">
+            Create Manager
+        </a>
+        <!-- manager list -->
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
@@ -88,6 +96,7 @@ if (!$result) {
         </table>
     </div>
 </body>
+
 
 <!-- Bootstrap JS -->
 <script src="../js/bootstrap.bundle.min.js"></script>

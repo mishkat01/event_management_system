@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// check if the form is submitted successfully
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -16,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "<script>alert('You are banned. Access denied.'); window.location.href='login.php';</script>";
             exit;
         }
-
+        // Redirect users based on their roles
         if (password_verify($password, $row['password'])) {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['role'] = $row['role'];
@@ -51,29 +52,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <title>Document</title>
 </head>
 
-<body>
-    <form method="POST" class="w-50 mx-auto mt-5 p-4 border rounded shadow-sm">
-        <h2 class="text-center mb-4">Login</h2>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Login</button>
-        <a href="../index.php" class="btn btn-secondary btn-block mt-2">Register</a>
-    </form>
+<body class="bg-primary bg-gradient d-flex align-items-center justify-content-center vh-100">
 
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow rounded">
+                    <div class="card-body p-4">
+                        <h2 class="text-center text-primary mb-4">Login</h2>
+
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                            <a href="../index.php" class="btn btn-outline-secondary w-100 mt-2">Register</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="../js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

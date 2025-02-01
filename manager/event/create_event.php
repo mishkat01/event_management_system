@@ -1,7 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    die("Access denied! Please login.");
+// Check if the user is an manager
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'manager') {
+    header('Location: ../../auth/login.php');
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

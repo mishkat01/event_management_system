@@ -4,7 +4,7 @@ require '../config/config.php';
 
 // Check if the user is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 
@@ -29,7 +29,7 @@ header('Content-Type: text/csv');
 header('Content-Disposition: attachment; filename="registrations_list_event_' . $event_id . '.csv"');
 
 $output = fopen('php://output', 'w');
-fputcsv($output, ['Registration ID', 'User ID', 'User Name', 'Email', 'Phone', 'Registered At']);
+fputcsv($output, ['Registration ID', 'User ID', 'User Name', 'Email', 'Registered At']);
 
 // Fetch registrations with user details using the foreign key
 $stmt = $pdo->prepare("

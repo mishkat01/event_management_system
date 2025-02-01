@@ -6,7 +6,7 @@ require '../config/config.php';
 $stmt = $pdo->query("SELECT e.*, (SELECT COUNT(*) FROM registrations r WHERE r.event_id = e.id) AS registered_count FROM events e");
 $events = $stmt->fetchAll();
 
-// Check if the user is an admin
+// Check if the user is an user
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
     header('Location: ../auth/login.php');
     exit;
