@@ -17,16 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_event'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $max_capacity = (int)$_POST['max_capacity'];
+    $user_id = $_SESSION['user_id'];
 
     // Connect to database
     $conn = new mysqli('localhost', 'root', '', 'event_management_system');
 
-
     // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO events (name, description, max_capacity) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO events (name,user_id, description, max_capacity) VALUES (?,?, ?, ?)");
 
     // Bind parameters (s = string, i = integer)
-    $stmt->bind_param("ssi", $name, $description, $max_capacity);
+    $stmt->bind_param("sisi", $name, $user_id, $description, $max_capacity);
 
     // Execute statement
     if ($stmt->execute()) {
@@ -80,6 +80,7 @@ if (isset($_GET['delete_event_id'])) {
             </div>
             <div class="card-body">
                 <form method="POST">
+                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
                     <div class="form-group mb-3">
                         <label for="name" class="form-label">Event Name</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="Enter event name" required>

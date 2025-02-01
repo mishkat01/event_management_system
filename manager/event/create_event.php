@@ -8,10 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $max_capacity = $_POST['max_capacity'];
+    $user_id = $_SESSION['user_id'];
 
     $conn = new mysqli('localhost', 'root', '', 'event_management_system');
-    $stmt = $conn->prepare("INSERT INTO events (name, description, max_capacity) VALUES (?, ?, ?)");
-    $stmt->bind_param('ssi', $name, $description, $max_capacity);
+    // Prepare the SQL statement
+    $stmt = $conn->prepare("INSERT INTO events (name,user_id, description, max_capacity) VALUES (?,?, ?, ?)");
+    // Bind parameters (s = string, i = integer)
+    $stmt->bind_param("sisi", $name, $user_id, $description, $max_capacity);
 
     if ($stmt->execute()) {
         echo "Event created successfully!";
@@ -40,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <form method="POST" class="p-4 border rounded bg-white shadow-sm">
+                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
                     <h3 class="text-primary mb-3 text-center">Create New Event</h3>
 
                     <div class="form-group mb-3">
