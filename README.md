@@ -30,7 +30,7 @@ Create Database
 
 B.Open phpMyAdmin at http://localhost/phpmyadmin.
 Create a database event_management_system.
-Go to Import and import the sql file situated in local database folder.
+Go to Export and export the sql file situated in local database folder.
 
 Run the Project
 
