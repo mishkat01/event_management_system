@@ -41,7 +41,7 @@ This Event Management System simplifies event planning and coordination. Users c
 ### B. Create Database
 - Open phpMyAdmin at [http://localhost/phpmyadmin](http://localhost/phpmyadmin).  
 - Create a database named **event_management_system**.  
-- Go to **Export** and export the `.sql` file situated in the local database folder.
+- Go to **Import** and import the `.sql` file situated in the local database folder.
 
 ### C. Run the Project
 - Place project files in the **htdocs** or appropriate server folder.  
